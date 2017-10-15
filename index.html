@@ -197,8 +197,8 @@
             <div class="col-md-4 float-left padd-all">
               <div class="col-md-12">
                 <div id="carouselControls" class="carousel slide " data-ride="carousel">
-                  <div class="carousel-inner" role="listbox">
-                    <div class="carousel-item box1 active">
+                  <div class="carousel-inner offer" value="1" role="listbox">
+                    <div class="carousel-item box1 active" >
                       <a href="#"><i class="icon ion-ios-heart-outline"></i></a>
                       <img class="d-block img-fluid img-fluid-food " src="img/food1.png" alt="First slide" >
                     </div>
@@ -234,7 +234,7 @@
             <div class="col-md-4 float-left padd-all">
               <div class="col-md-12">
                 <div id="carouselControls1" class="carousel slide " data-ride="carousel">
-                  <div class="carousel-inner" role="listbox">
+                  <div class="carousel-inner offer" value="2" role="listbox">
                     <div class="carousel-item box1 active">
                       <a href="#"><i class="icon ion-ios-heart-outline"></i></a>
                       <img class="d-block img-fluid img-fluid-food" src="img/food2.png" alt="First slide" >
@@ -270,7 +270,7 @@
             <div class="col-md-4 float-left padd-all">
               <div class="col-md-12">
                 <div id="carouselControls2" class="carousel slide " data-ride="carousel">
-                  <div class="carousel-inner" role="listbox">
+                  <div class="carousel-inner offer" value="3" role="listbox">
                     <div class="carousel-item box1 active">
                       <a href="#"><i class="icon ion-ios-heart-outline"></i></a>
                       <img class="d-block img-fluid img-fluid-food" src="img/food3.png" alt="First slide" >
@@ -305,7 +305,7 @@
             <div class="col-md-4 float-left padd-all">
               <div class="col-md-12">
                 <div id="carouselControls3" class="carousel slide " data-ride="carousel">
-                  <div class="carousel-inner" role="listbox">
+                  <div class="carousel-inner offer" value="4" role="listbox">
                     <div class="carousel-item box1 active">
                       <a href="#"><i class="icon ion-ios-heart-outline"></i></a>
                       <img class="d-block img-fluid img-fluid-food" src="img/food4.png" alt="First slide" >
@@ -340,7 +340,7 @@
             <div class="col-md-4 float-left padd-all">
               <div class="col-md-12">
                 <div id="carouselControls4" class="carousel slide " data-ride="carousel">
-                  <div class="carousel-inner" role="listbox">
+                  <div class="carousel-inner offer" value="5" role="listbox">
                     <div class="carousel-item box1 active">
                       <a href="#"><i class="icon ion-ios-heart-outline"></i></a>
                       <img class="d-block img-fluid img-fluid-food" src="img/food5.png" alt="First slide" >
@@ -375,7 +375,7 @@
             <div class="col-md-4 float-left padd-all">
               <div class="col-md-12">
                 <div id="carouselControls5" class="carousel slide " data-ride="carousel">
-                  <div class="carousel-inner" role="listbox">
+                  <div class="carousel-inner offer" value="6" role="listbox">
                     <div class="carousel-item box1 active" >
                       <a href="#"><i class="icon ion-ios-heart-outline"></i></a>
                       <img class="d-block img-fluid img-fluid-food" src="img/food6.png" alt="First slide" >
@@ -427,27 +427,114 @@
       </div>
       <!-- /.container -->
     </footer>
+
+    <script src="vendor/jquery/jquery.min.js"></script>
     <script>
-      // This example adds a search box to a map, using the Google Place Autocomplete
-      // feature. People can enter geographical searches. The search box will return a
-      // pick list containing a mix of places and predicted search terms.
+      $( ".offer" ).mouseover(function() {
 
-      // This example requires the Places library. Include the libraries=places
-      // parameter when you first load the API. For example:
-      // <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&libraries=places">
+        var id = $(this).attr("value");
+        var infowindow = new google.maps.InfoWindow();
 
-      function initAutocomplete() {
+        var marker, i;
+        var iconActive = {
+          url: 'img/markerActive.png',
+          scaledSize: new google.maps.Size(50, 68), // scaled size
+          labelOrigin: new google.maps.Point(25,30)
+        };
+        var iconNonActvie = {
+          url: 'img/marker.png',
+          scaledSize: new google.maps.Size(50, 68), // scaled size
+          labelOrigin: new google.maps.Point(25,30)
+        };
 
-        var locations = [
-          ['40$', 40.699857, -73.984787],
-          ['50$', 40.699756, -73.984573],
-          ['30$', 40.700471, -73.985367],
-          ['50$', 40.700435, -73.984568],
-          ['60$',40.699800, -73.983484],
-          ['30$', 40.698719, -73.985614],
-        ];
 
-        var map = new google.maps.Map(document.getElementById('map'), {
+        for (i = 0; i < locations.length; i++) {
+          if(id == locations[i][3] ){
+            icon = iconActive;
+            markers[i].setMap(null);
+            marker = new google.maps.Marker({
+              position: new google.maps.LatLng(locations[i][1], locations[i][2]),
+              map: map,
+              icon: icon,
+              label :{text: locations[i][0], color: "white", fontSize: '12px'},
+            });
+            markers[i] =marker;
+
+            google.maps.event.addListener(marker, 'click', (function(marker, i) {
+              return function() {
+                infowindow.setContent(locations[i][0]);
+                infowindow.open(map, marker);
+              }
+            })(marker, i));
+          }else{
+            icon = iconNonActvie;
+          }
+
+        }
+      });
+
+
+      $( ".offer" ).mouseleave(function() {
+
+        var id = $(this).attr("value");
+
+        var infowindow = new google.maps.InfoWindow();
+
+        var marker, i;
+        var iconActive = {
+          url: 'img/markerActive.png',
+          scaledSize: new google.maps.Size(50, 68), // scaled size
+          labelOrigin: new google.maps.Point(25,30)
+        };
+        var iconNonActvie = {
+          url: 'img/marker.png',
+          scaledSize: new google.maps.Size(50, 68), // scaled size
+          labelOrigin: new google.maps.Point(25,30)
+        };
+
+
+        for (i = 0; i < locations.length; i++) {
+          if(id  == locations[i][3] ){
+            icon = iconNonActvie;
+            markers[i].setMap(null);
+            marker = new google.maps.Marker({
+              position: new google.maps.LatLng(locations[i][1], locations[i][2]),
+              map: map,
+              icon: icon,
+              label :{text: locations[i][0], color: "white", fontSize: '12px'},
+            });
+            markers[i] =marker;
+
+            google.maps.event.addListener(marker, 'click', (function(marker, i) {
+              return function() {
+                infowindow.setContent(locations[i][0]);
+                infowindow.open(map, marker);
+              }
+            })(marker, i));
+          }else{
+            icon = iconNonActvie;
+          }
+
+        }
+      });
+
+
+
+
+      var markers = [];
+      var locations = [
+        ['40$', 40.699857, -73.984787, 1],
+        ['50$', 40.699756, -73.984573, 2],
+        ['30$', 40.700471, -73.985367, 3],
+        ['50$', 40.700435, -73.984568, 4],
+        ['60$',40.699800, -73.983484, 5],
+        ['30$', 40.698719, -73.985614, 6]
+      ];
+      var map;
+      function initAutocomplete(id) {
+
+
+         map = new google.maps.Map(document.getElementById('map'), {
           center: {lat: 40.699833, lng:  -73.983945},
           zoom: 17,
           mapTypeId: 'roadmap',
@@ -462,6 +549,36 @@
 
         });
 
+
+
+        var infowindow = new google.maps.InfoWindow();
+
+        var marker, i;
+
+        var icon = {
+          url: 'img/marker.png',
+          scaledSize: new google.maps.Size(50, 68), // scaled size
+          labelOrigin: new google.maps.Point(25,30)
+        };
+
+
+        for (i = 0; i < locations.length; i++) {
+
+          marker = new google.maps.Marker({
+            position: new google.maps.LatLng(locations[i][1], locations[i][2]),
+            map: map,
+            icon: icon,
+            label :{text: locations[i][0], color: "white", fontSize: '12px'},
+          });
+          markers.push(marker);
+          google.maps.event.addListener(marker, 'click', (function(marker, i) {
+            return function() {
+              infowindow.setContent(locations[i][0]);
+              infowindow.open(map, marker);
+            }
+          })(marker, i));
+        }
+
         // Create the search box and link it to the UI element.
         var input = document.getElementById('pac-input');
         var searchBox = new google.maps.places.SearchBox(input);
@@ -472,33 +589,8 @@
           searchBox.setBounds(map.getBounds());
         });
 
-        var markers = [];
 
-        var infowindow = new google.maps.InfoWindow();
 
-        var marker, i;
-        var icon = {
-          url: 'img/marker.png',
-          scaledSize: new google.maps.Size(50, 68), // scaled size
-          labelOrigin: new google.maps.Point(25,30)
-        };
-        for (i = 0; i < locations.length; i++) {
-          marker = new google.maps.Marker({
-            position: new google.maps.LatLng(locations[i][1], locations[i][2]),
-            map: map,
-            icon: icon,
-            label :{text: locations[i][0], color: "white", fontSize: '12px'},
-          });
-
-          google.maps.event.addListener(marker, 'click', (function(marker, i) {
-            return function() {
-              infowindow.setContent(locations[i][0]);
-              infowindow.open(map, marker);
-            }
-          })(marker, i));
-        }
-        // Listen for the event fired when the user selects a prediction and retrieve
-        // more details for that place.
         searchBox.addListener('places_changed', function() {
           var places = searchBox.getPlaces();
 
@@ -545,7 +637,7 @@
     </script>
 
     <!-- Bootstrap core JavaScript -->
-    <script src="vendor/jquery/jquery.min.js"></script>
+
     <script src="vendor/popper/popper.min.js"></script>
     <script src="vendor/bootstrap/js/bootstrap.min.js"></script>
 
